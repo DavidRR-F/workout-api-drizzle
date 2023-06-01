@@ -1,4 +1,3 @@
-import { Table } from "drizzle-orm"
 import { pgTable, serial, text } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {

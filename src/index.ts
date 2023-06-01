@@ -1,47 +1,26 @@
-import { drizzle } from "drizzle-orm/postgres-js"
-import postgres from "postgres"
-import { users } from "./schema"
-import { InferModel } from "drizzle-orm"
-import express from "express"
+import express, { Application } from "express"
 import * as dotenv from "dotenv"
 import cors from "cors"
-
-const connectionString = "postgres://admin:admin@localhost:5433/mydatabase"
-
-const client = postgres(connectionString)
-const db = drizzle(client)
+import userRoutes from "./api/routes/userRoutes"
 
 dotenv.config()
+const app: Application = express()
 
-const app = express()
-app.use(cors())
+// Middleware
 app.use(express.json())
+app.use(cors())
+// app.use(helmet());
+// app.use(morgan('dev'));
 
-type NewUser = InferModel<typeof users, "insert">
+// Routes
+app.use("/users", userRoutes)
 
-const insertUser = async (user: NewUser) => {
-  return db.insert(users).values(user)
-}
+// Error handling middleware
+// app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello World" })
+// Start the server
+const port = process.env.PORT || 8080
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
-
-app.post("/users", async (req, res) => {
-  const { firstName, lastName, email }: NewUser = req.body
-
-  const newUser = await insertUser({
-    firstName,
-    lastName,
-    email,
-  })
-
-  res.status(201).json(newUser)
-})
-
-app.get("/users", async (req, res) => {
-  const allUsers = await db.select().from(users)
-  res.json(allUsers)
-})
-
-app.listen(8080, () => console.log("Server Started on 8080"))
