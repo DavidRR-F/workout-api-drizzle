@@ -1,8 +1,7 @@
 import { eq, placeholder, sql } from "drizzle-orm"
 import { db } from ".."
-import { NewUser, User } from "../models/userModels"
+import { UpsertUser } from "../models/userModels"
 import { users } from "../schemas/userSchema"
-import { query } from "express"
 import { workouts } from "../schemas/workoutSchema"
 import { exercises } from "../schemas/exerciseSchema"
 
@@ -24,17 +23,11 @@ export const GetUser = db.query.users
   })
   .prepare("GetUser")
 
-export const InsertUser = db
-  .insert(users)
-  .values({
-    firstName: placeholder("firstName"),
-    lastName: placeholder("lastName"),
-    email: placeholder("email"),
-  })
-  .returning()
-  .prepare("InsertUser")
-
-export const UpdateUser = async (id: number, user: NewUser) => {
+export const InsertUser = async (user: UpsertUser) => {
+  return db.insert(users).values(user).returning()
+  //.prepare("InsertUser")
+}
+export const UpdateUser = async (id: number, user: UpsertUser) => {
   return db
     .update(users)
     .set({ ...user })

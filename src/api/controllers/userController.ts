@@ -16,7 +16,7 @@ export const getUsers = async (req: Request, res: Response) => {
   res.json(allUsers)
 }
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
   const id = Number(req.params.id)
   const user = await GetUser.execute({ id })
   if (!user) {
@@ -30,12 +30,12 @@ export const createUser = async (req: Request, res: Response) => {
   if (!validator.isEmail(email)) {
     throw new ValidationError("Invalid email format", "email")
   }
-  const newUser = await InsertUser.execute({
+  const user = await InsertUser({
     firstName,
     lastName,
     email,
   })
-  res.status(201).json(newUser)
+  res.status(201).json(user)
 }
 
 export const updateUser = async (req: Request, res: Response) => {

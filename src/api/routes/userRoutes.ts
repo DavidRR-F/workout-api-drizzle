@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import {
   createUser,
-  getUserById,
+  getUser,
   getUsers,
   updateUser,
   deleteUser,
@@ -9,15 +9,10 @@ import {
 
 const router = express.Router()
 
-// GET /users
-router.get("/users", getUsers)
-// POST /users
-router.post("/users", createUser)
-// GET /users/:id
-router.get("/users/:id", getUserById)
-// PATCH /users/:id
-router.patch("/users/:id", updateUser)
-// DELETE /users/:id
-router.delete("/users/:id", deleteUser)
+router.get("", getUsers)
+router.post("", createUser)
+router.get("/:id", getUser)
+router.patch("/:id", updateUser)
+router.delete("/:id", deleteUser)
 
 export default router
