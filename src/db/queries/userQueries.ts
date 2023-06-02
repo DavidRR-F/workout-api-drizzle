@@ -5,11 +5,7 @@ import { users } from "../schemas/userSchema"
 import { query } from "express"
 
 export const GetAllUsers = async () => {
-  return await db.query.users.findMany({
-    with: {
-      workouts: true,
-    },
-  })
+  return await db.query.users.findMany()
 }
 
 export const GetUser = async (id: number) => {

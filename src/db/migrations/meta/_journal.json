@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1685664925794,
+      "tag": "0000_long_wolfsbane",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1685667046854,
+      "tag": "0001_yellow_rage",
+      "breakpoints": true
+    }
+  ]
+}

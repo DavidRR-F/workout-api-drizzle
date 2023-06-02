@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { NewUser, User } from "../../db/models/userModels"
 import {
+  DeleteUser,
   GetAllUsers,
   GetUser,
   InsertUser,
@@ -48,4 +49,10 @@ export const updateUser = async (req: Request, res: Response) => {
     throw new NotFoundError("User not found")
   }
   res.json(updatedUser)
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const userId = Number(req.params.id)
+  DeleteUser(userId)
+  res.status(204).send()
 }

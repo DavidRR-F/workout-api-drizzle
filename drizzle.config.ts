@@ -1,7 +1,7 @@
 import type { Config } from "drizzle-kit"
 
 export default {
-  schema: "./src/db/schema.ts",
+  schema: "./src/db/schemas/*",
   out: "./src/db/migrations",
   breakpoints: true,
 } satisfies Config

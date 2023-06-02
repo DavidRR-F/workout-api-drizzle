@@ -17,12 +17,14 @@ export const exercises = pgTable("exercises", {
   repRangeBottom: integer("rep_range_bottom").default(8),
   weight: doublePrecision("weight").default(0.0),
   weightIncrease: doublePrecision("weight_increase").default(2.5),
-  workoutId: integer("workout_id").notNull(),
+  workoutId: integer("workout_id")
+    .notNull()
+    .references(() => workouts.id),
 })
 // many to many with workouts
-export const exerciseRelations = relations(exercises, ({ one }) => ({
-  workout: one(workouts, {
-    fields: [exercises.workoutId],
-    references: [workouts.id],
-  }),
-}))
+// export const exerciseRelations = relations(exercises, ({ one }) => ({
+//   workout: one(workouts, {
+//     fields: [exercises.workoutId],
+//     references: [workouts.id],
+//   }),
+// }))

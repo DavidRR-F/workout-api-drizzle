@@ -6,14 +6,16 @@ import { exercises } from "./exerciseSchema"
 export const workouts = pgTable("workouts", {
   id: serial("id").primaryKey().notNull(),
   name: varchar("name", { length: 256 }).notNull(),
-  userId: integer("user_id").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
 })
 // Many to one with users
 // one to many with exercises
-export const workoutRelations = relations(workouts, ({ one, many }) => ({
-  user: one(users, {
-    fields: [workouts.userId],
-    references: [users.id],
-  }),
-  exercises: many(exercises),
-}))
+// export const workoutRelations = relations(workouts, ({ one, many }) => ({
+//   user: one(users, {
+//     fields: [workouts.userId],
+//     references: [users.id],
+//   }),
+//   exercises: many(exercises),
+// }))

@@ -6,8 +6,8 @@ export const users = pgTable(
   "users",
   {
     id: serial("id").primaryKey().notNull(),
-    firstName: varchar("firstName", { length: 256 }).notNull(),
-    lastName: varchar("lastName", { length: 256 }).notNull(),
+    firstName: varchar("first_name", { length: 256 }).notNull(),
+    lastName: varchar("last_name", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).notNull(),
   },
   (users) => ({
@@ -15,6 +15,6 @@ export const users = pgTable(
   }),
 )
 //one to many with workout
-export const usersRelations = relations(users, ({ many }) => ({
-  workouts: many(workouts),
-}))
+// export const usersRelations = relations(users, ({ many }) => ({
+//   workouts: many(workouts),
+// }))
