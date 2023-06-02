@@ -9,7 +9,6 @@
     "db:get": "drizzle-kit introspect:pg",
     "db:migrate": "ts-node --files src/db/migrations/migrator.ts",
     "dev": "tsx src/index.ts",
-    "start": "node dist/index.js",
     "build": "npx tsc"
   },
   "dependencies": {
