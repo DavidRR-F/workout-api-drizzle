@@ -6,12 +6,17 @@ This is the documentation for the Workout Tracker API. The API is built using Ex
 
 To get started with the API, follow these steps:
 
-1. Install Node.js (version 14 or higher) and npm (version 6 or higher).
+1. Install Node.js (version 14 or higher), npm (version 6 or higher), and docker.
 2. Clone the repository and navigate to the project directory.
 3. Install dependencies using npm install.
-4. Start the server using npm start.
+4. Run docker-compose up -d to spin up a test db
+5. create a .env file and paste the following
+```
+DATABASE_URL=postgres://admin:admin@localhost:5433/mydatabase
+```
+7. Start the server using npm run dev.
 
-The API will be available at http://localhost:3000.
+The API will be available at http://localhost:8080.
 
 ## Postman Collection
 
