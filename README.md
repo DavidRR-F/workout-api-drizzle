@@ -28,17 +28,17 @@ The following endpoints are available:
 | GET    | /users                                                      | Get a list of all users                |
 | POST   | /users                                                      | Create a user                          |
 | GET    | /users/{userId}                                             | Get a user                             |
-| PUT    | /users/{userId}                                             | Update a user                          |
+| PATCH    | /users/{userId}                                             | Update a user                          |
 | DELETE | /users/{userId}                                             | Delete a user                          |
 | GET    | /users/{userId}/workouts                                    | Get a list of all workouts for a user  |
 | POST   | /users/{userId}/workouts                                    | Create a new workout for a user        |
 | GET    | /users/{userId}/workouts/{workoutId}                        | Get a workout for a user               |
-| PUT    | /users/{userId}/workouts/{workoutId}                        | Update a workout for a user            |
+| PATCH    | /users/{userId}/workouts/{workoutId}                        | Update a workout for a user            |
 | DELETE | /users/{userId}/workouts/{workoutId}                        | Delete a workout for a user            |
 | GET    | /users/{userId}/workouts/{workoutId}/exercises              | Get a list of all exercises for a user |
 | POST   | /users/{userId}/workouts/{workoutId}/exercises              | Create a new exercises for a user      |
 | GET    | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Get a exercises for a user             |
-| PUT    | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Update a exercises for a user          |
+| PATCH    | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Update a exercises for a user          |
 | DELETE | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Delete a exercises for a user          |
 
 ### Examples
