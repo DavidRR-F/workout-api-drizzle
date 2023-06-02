@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { NewUser, User } from "../../db/models/userModels"
+import { PostgresError } from "postgres"
 import {
   DeleteUser,
   GetAllUsers,
@@ -26,15 +27,24 @@ export const getUserById = async (req: Request, res: Response) => {
 // POST /users
 export const createUser = async (req: Request, res: Response) => {
   // Create a new user in the database or any data source
-  const { firstName, lastName, email }: NewUser = req.body
-
-  const newUser = await InsertUser({
-    firstName,
-    lastName,
-    email,
-  })
-
-  res.status(201).json(newUser)
+  try {
+    const { firstName, lastName, email }: NewUser = req.body
+    const newUser = await InsertUser({
+      firstName,
+      lastName,
+      email,
+    })
+    res.status(201).json(newUser)
+  } catch (error) {
+    if (
+      error instanceof PostgresError &&
+      error.constraint_name === "email_idx"
+    ) {
+      res.status(409).json({ error: "User with this email already exists" })
+    } else {
+      res.status(500).json({ error: "Oppsie Woopsie" })
+    }
+  }
 }
 
 export const updateUser = async (req: Request, res: Response) => {

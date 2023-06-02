@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express"
+import { PostgresError } from "postgres"
 
 // Custom error handling middleware function
 export const errorHandler = (
@@ -11,6 +12,10 @@ export const errorHandler = (
 
   if (err instanceof NotFoundError) {
     return res.status(404).json({ message: err.message })
+  }
+
+  if (err instanceof PostgresError && err.constraint_name === "email_inx") {
+    return res.status(409).json({ message: err.message })
   }
 
   // Handle 409 Conflict errors
