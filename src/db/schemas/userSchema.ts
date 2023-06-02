@@ -15,6 +15,6 @@ export const users = pgTable(
   }),
 )
 //one to many with workout
-// export const usersRelations = relations(users, ({ many }) => ({
-//   workouts: many(workouts),
-// }))
+export const usersRelations = relations(users, ({ many }) => ({
+  workouts: many(workouts),
+}))

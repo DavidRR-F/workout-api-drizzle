@@ -12,12 +12,12 @@ import { NotFoundError } from "../middlewares/errorHandlers"
 
 export const getUsers = async (req: Request, res: Response) => {
   // Retrieve all users from the database or any data source
-  const allUsers = await GetAllUsers()
+  const allUsers = await GetAllUsers.execute()
   res.json(allUsers)
 }
 
 export const getUserById = async (req: Request, res: Response) => {
-  const user = await GetUser(Number(req.params.id))
+  const user = await GetUser.execute({ id: Number(req.params.id) })
   if (!user) {
     throw new NotFoundError("User not found")
   }
@@ -29,7 +29,7 @@ export const createUser = async (req: Request, res: Response) => {
   // Create a new user in the database or any data source
   try {
     const { firstName, lastName, email }: NewUser = req.body
-    const newUser = await InsertUser({
+    const newUser = await InsertUser.execute({
       firstName,
       lastName,
       email,
@@ -50,7 +50,8 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   const userId = Number(req.params.id)
   const { firstName, lastName, email }: NewUser = req.body
-  const updatedUser = UpdateUser(userId, {
+  const updatedUser = await UpdateUser.execute({
+    id: userId,
     firstName,
     lastName,
     email,

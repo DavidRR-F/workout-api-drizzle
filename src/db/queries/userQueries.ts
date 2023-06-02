@@ -1,27 +1,49 @@
-import { eq } from "drizzle-orm"
+import { eq, placeholder, sql } from "drizzle-orm"
 import { db } from ".."
 import { NewUser, User } from "../models/userModels"
 import { users } from "../schemas/userSchema"
 import { query } from "express"
+import { workouts } from "../schemas/workoutSchema"
+import { exercises } from "../schemas/exerciseSchema"
 
-export const GetAllUsers = async () => {
-  return await db.query.users.findMany()
-}
+export const GetAllUsers = db.query.users.findMany().prepare("GetAllUsers")
 
-export const GetUser = async (id: number) => {
-  return await db.select().from(users).where(eq(users.id, id))
-}
+export const GetUser = db.query.users
+  .findFirst({
+    where: eq(users.id, placeholder("id")),
+    with: {
+      workouts: {
+        where: eq(workouts.userId, placeholder("id")),
+        with: {
+          exercises: {
+            where: eq(exercises.workoutId, workouts.id),
+          },
+        },
+      },
+    },
+  })
+  .prepare("GetUser")
 
-export const InsertUser = async (user: NewUser) => {
-  return await db.insert(users).values(user)
-}
+export const InsertUser = db
+  .insert(users)
+  .values({
+    firstName: placeholder("firstName"),
+    lastName: placeholder("lastName"),
+    email: placeholder("email"),
+  })
+  .returning()
+  .prepare("InsertUser")
 
-export const UpdateUser = async (id: number, userInfo: NewUser) => {
-  return await db
-    .update(users)
-    .set({ ...userInfo })
-    .where(eq(users.id, id))
-}
+export const UpdateUser = db
+  .update(users)
+  .set({
+    firstName: String(placeholder("firstName")),
+    lastName: String(placeholder("lastName")),
+    email: String(placeholder("email")),
+  })
+  .where(eq(users.id, placeholder("id")))
+  .returning()
+  .prepare("UpdateUser")
 
 export const DeleteUser = async (id: number) => {
   await db.delete(users).where(eq(users.id, id))
