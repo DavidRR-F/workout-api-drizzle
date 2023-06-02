@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { NewUser, User } from "../../db/models/userModels"
-import { PostgresError } from "postgres"
+import validator from "validator"
+import { UpsertUser } from "../../db/models/userModels"
 import {
   DeleteUser,
   GetAllUsers,
@@ -8,62 +8,55 @@ import {
   InsertUser,
   UpdateUser,
 } from "../../db/queries/userQueries"
-import { NotFoundError } from "../middlewares/errorHandlers"
+import NotFoundError from "../errors/NotFoundError"
+import ValidationError from "../errors/VailidationError"
 
 export const getUsers = async (req: Request, res: Response) => {
-  // Retrieve all users from the database or any data source
   const allUsers = await GetAllUsers.execute()
   res.json(allUsers)
 }
 
 export const getUserById = async (req: Request, res: Response) => {
-  const user = await GetUser.execute({ id: Number(req.params.id) })
+  const id = Number(req.params.id)
+  const user = await GetUser.execute({ id })
   if (!user) {
-    throw new NotFoundError("User not found")
+    throw new NotFoundError(`User ${id} not found`, "id")
   }
   res.json(user)
 }
 
-// POST /users
 export const createUser = async (req: Request, res: Response) => {
-  // Create a new user in the database or any data source
-  try {
-    const { firstName, lastName, email }: NewUser = req.body
-    const newUser = await InsertUser.execute({
-      firstName,
-      lastName,
-      email,
-    })
-    res.status(201).json(newUser)
-  } catch (error) {
-    if (
-      error instanceof PostgresError &&
-      error.constraint_name === "email_idx"
-    ) {
-      res.status(409).json({ error: "User with this email already exists" })
-    } else {
-      res.status(500).json({ error: "Oppsie Woopsie" })
-    }
+  const { firstName, lastName, email }: UpsertUser = req.body
+  if (!validator.isEmail(email)) {
+    throw new ValidationError("Invalid email format", "email")
   }
+  const newUser = await InsertUser.execute({
+    firstName,
+    lastName,
+    email,
+  })
+  res.status(201).json(newUser)
 }
 
 export const updateUser = async (req: Request, res: Response) => {
-  const userId = Number(req.params.id)
-  const { firstName, lastName, email }: NewUser = req.body
-  const updatedUser = await UpdateUser.execute({
-    id: userId,
+  const id = Number(req.params.id)
+  const { firstName, lastName, email }: UpsertUser = req.body
+  if (!validator.isEmail(email)) {
+    throw new ValidationError("Invalid email format", "email")
+  }
+  const updatedUser = await UpdateUser(id, {
     firstName,
     lastName,
     email,
   })
   if (!updatedUser) {
-    throw new NotFoundError("User not found")
+    throw new NotFoundError(`User ${id} not found`, "id")
   }
   res.json(updatedUser)
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-  const userId = Number(req.params.id)
-  DeleteUser(userId)
+  const id = Number(req.params.id)
+  DeleteUser.execute({ id })
   res.status(204).send()
 }

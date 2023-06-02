@@ -19,7 +19,7 @@ export const exercises = pgTable("exercises", {
   weightIncrease: doublePrecision("weight_increase").default(2.5),
   workoutId: integer("workout_id")
     .notNull()
-    .references(() => workouts.id),
+    .references(() => workouts.id, { onDelete: "cascade" }),
 })
 // many to many with workouts
 export const exerciseRelations = relations(exercises, ({ one }) => ({

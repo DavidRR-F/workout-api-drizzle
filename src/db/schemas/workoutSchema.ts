@@ -8,7 +8,7 @@ export const workouts = pgTable("workouts", {
   name: varchar("name", { length: 256 }).notNull(),
   userId: integer("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
 })
 // Many to one with users
 // one to many with exercises

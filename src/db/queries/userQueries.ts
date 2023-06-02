@@ -34,17 +34,15 @@ export const InsertUser = db
   .returning()
   .prepare("InsertUser")
 
-export const UpdateUser = db
-  .update(users)
-  .set({
-    firstName: String(placeholder("firstName")),
-    lastName: String(placeholder("lastName")),
-    email: String(placeholder("email")),
-  })
-  .where(eq(users.id, placeholder("id")))
-  .returning()
-  .prepare("UpdateUser")
-
-export const DeleteUser = async (id: number) => {
-  await db.delete(users).where(eq(users.id, id))
+export const UpdateUser = async (id: number, user: NewUser) => {
+  return db
+    .update(users)
+    .set({ ...user })
+    .where(eq(users.id, id))
+    .returning()
+  //.prepare("UpdateUser")
 }
+export const DeleteUser = db
+  .delete(users)
+  .where(eq(users.id, placeholder("id")))
+  .prepare("DeleteUser")

@@ -1,9 +1,9 @@
 import express, { Application } from "express"
 import * as dotenv from "dotenv"
 import cors from "cors"
+import "express-async-errors"
 import userRoutes from "./api/routes/userRoutes"
-import { errorHandler } from "./api/middlewares/errorHandlers"
-import morgan from "morgan"
+import errorHandler from "./api/middlewares/errorHandlers"
 
 dotenv.config()
 const app: Application = express()
@@ -11,12 +11,10 @@ const app: Application = express()
 // Middleware
 app.use(express.json())
 app.use(cors())
-app.use(errorHandler)
 // Routes
 app.use("", userRoutes)
 
-// Error handling middleware
-// app.use(errorHandler);
+app.use("*", errorHandler)
 
 // Start the server
 const port = process.env.PORT || 8080
