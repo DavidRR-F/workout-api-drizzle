@@ -65,7 +65,7 @@ npm run dev
 
 ## Postman Collection
 
-You can find the Postman collection for this project [here](https://gist.github.com/DavidRR-F/67c4c89fb8fcfd554fc181381994520b).
+You can find the Postman collection for this project [here](https://gist.github.com/DavidRR-F/aed8ecb388f1d007efb512196a6ffb9e).
 
 To import the Postman collection, click the **Import** button in Postman and provide the URL to the raw JSON file:
 
@@ -73,23 +73,23 @@ To import the Postman collection, click the **Import** button in Postman and pro
 
 The following endpoints are available:
 
-| Method | URL                                                         | Description                            |
-| ------ | ----------------------------------------------------------- | -------------------------------------- |
-| GET    | /users                                                      | Get a list of all users                |
-| POST   | /users                                                      | Create a user                          |
-| GET    | /users/{userId}                                             | Get a user                             |
-| PATCH  | /users/{userId}                                             | Update a user                          |
-| DELETE | /users/{userId}                                             | Delete a user                          |
-| GET    | /users/{userId}/workouts                                    | Get a list of all workouts for a user  |
-| POST   | /users/{userId}/workouts                                    | Create a new workout for a user        |
-| GET    | /users/{userId}/workouts/{workoutId}                        | Get a workout for a user               |
-| PATCH  | /users/{userId}/workouts/{workoutId}                        | Update a workout for a user            |
-| DELETE | /users/{userId}/workouts/{workoutId}                        | Delete a workout for a user            |
-| GET    | /users/{userId}/workouts/{workoutId}/exercises              | Get a list of all exercises for a user |
-| POST   | /users/{userId}/workouts/{workoutId}/exercises              | Create a new exercises for a user      |
-| GET    | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Get a exercises for a user             |
-| PATCH  | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Update a exercises for a user          |
-| DELETE | /users/{userId}/workouts/{workoutId}/exercises/{exerciseId} | Delete a exercises for a user          |
+| Method | URL                                          | Description                            |
+| ------ | -------------------------------------------- | -------------------------------------- |
+| GET    | /users                                       | Get a list of all users                |
+| POST   | /users                                       | Create a user                          |
+| GET    | /users/{userId}                              | Get a user                             |
+| PATCH  | /users/{userId}                              | Update a user                          |
+| DELETE | /users/{userId}                              | Delete a user                          |
+| GET    | /users/{userId}/workouts                     | Get a list of all workouts for a user  |
+| POST   | /users/{userId}/workouts                     | Create a new workout for a user        |
+| GET    | /users/{userId}/workouts/{workoutId}         | Get a workout for a user               |
+| PATCH  | /users/{userId}/workouts/{workoutId}         | Update a workout for a user            |
+| DELETE | /users/{userId}/workouts/{workoutId}         | Delete a workout for a user            |
+| GET    | /workouts/{workoutId}/exercises              | Get a list of all exercises for a user |
+| POST   | /workouts/{workoutId}/exercises              | Create a new exercises for a user      |
+| GET    | /workouts/{workoutId}/exercises/{exerciseId} | Get a exercises for a user             |
+| PATCH  | /workouts/{workoutId}/exercises/{exerciseId} | Update a exercises for a user          |
+| DELETE | /workouts/{workoutId}/exercises/{exerciseId} | Delete a exercises for a user          |
 
 ### Examples
 
@@ -164,7 +164,7 @@ HTTP/1.1 200 OK
 ]
 ```
 
-#### POST /users/{userId}/workouts/{workoutId}/exercises
+#### POST /workouts/{workoutId}/exercises
 
 This endpoint creates a new exercise for the specified workout.
 
@@ -198,7 +198,7 @@ HTTP/1.1 201 Created
 }
 ```
 
-#### GET /users/{userId}/workouts/{workoutID}/exercises/{exerciseId}
+#### GET /workouts/{workoutID}/exercises/{exerciseId}
 
 This endpoint retrieves a specific exercise by ID.
 
@@ -223,7 +223,7 @@ HTTP/1.1 200 OK
 }
 ```
 
-#### PUT /users/{userId}/workouts/{workoutId}/exercises/{exerciseId}
+#### PATCH /workouts/{workoutId}/exercises/{exerciseId}
 
 This endpoint updates an existing exercise.
 
@@ -257,14 +257,14 @@ HTTP/1.1 200 OK
 }
 ```
 
-#### DELETE /users/{userId}/workouts/{workoutId}/exercises/{exerciseId}
+#### DELETE /workouts/{workoutId}/exercises/{exerciseId}
 
 This endpoint deletes an existing exercise.
 
 **Response**
 
 ```
-HTTP/1.1 202 Accepted
+HTTP/1.1 204 Accepted
 ```
 
 ## Request and Response Formats
@@ -311,8 +311,12 @@ The API returns standard HTTP status codes and error messages in JSON format for
 HTTP/1.1 400 Bad Request
 
 {
-  "statusCode": 409,
-  "details": "User with that email already exists"
+  "errors": [
+    {
+      message: "User with that email already exists"
+      property: "email_idx"
+    }
+  ]
 }
 ```
 
@@ -322,7 +326,11 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 404 Not Found
 
 {
-  "statusCode": 404,
-  "details": "No exercise found with ID 123"
+  "errors": [
+    {
+      message: "User 1 Not Found"
+      property: "userId"
+    }
+  ]
 }
 ```
