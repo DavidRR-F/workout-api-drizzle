@@ -4,6 +4,7 @@ import cors from "cors"
 import "express-async-errors"
 import userRoutes from "./api/routes/userRoutes"
 import workoutRoutes from "./api/routes/workoutRoutes"
+import exerciseRoutes from "./api/routes/exerciseRoutes"
 import errorHandler from "./api/middlewares/errorHandlers"
 
 dotenv.config()
@@ -15,6 +16,7 @@ app.use(cors())
 // Routes
 app.use("/users", userRoutes)
 app.use("/users", workoutRoutes)
+app.use("/workouts", exerciseRoutes)
 
 app.use("*", errorHandler)
 

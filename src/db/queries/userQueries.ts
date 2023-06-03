@@ -1,9 +1,11 @@
-import { eq, placeholder, sql } from "drizzle-orm"
+import { InferModel, eq, placeholder, sql } from "drizzle-orm"
 import { db } from ".."
-import { UpsertUser } from "../models/userModels"
 import { users } from "../schemas/userSchema"
 import { workouts } from "../schemas/workoutSchema"
 import { exercises } from "../schemas/exerciseSchema"
+
+export type User = InferModel<typeof users, "select">
+export type UpsertUser = InferModel<typeof users, "insert">
 
 export const GetAllUsers = db.query.users.findMany().prepare("GetAllUsers")
 

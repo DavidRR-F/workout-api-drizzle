@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
 import {
+  Workout,
+  UpsertWorkout,
   GetWorkout,
   GetWorkouts,
   InsertWorkout,
@@ -7,7 +9,6 @@ import {
   DeleteWorkout,
 } from "../../db/queries/workoutQueries"
 import NotFoundError from "../errors/NotFoundError"
-import { UpsertWorkout, Workout } from "../../db/models/workoutModels"
 
 export const getWorkouts = async (req: Request, res: Response) => {
   const id = Number(req.params.userId)

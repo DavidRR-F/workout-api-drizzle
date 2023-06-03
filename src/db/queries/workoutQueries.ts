@@ -1,9 +1,11 @@
-import { eq, placeholder, sql } from "drizzle-orm"
+import { InferModel, eq, placeholder, sql } from "drizzle-orm"
 import { db } from ".."
-import { UpsertWorkout } from "../models/workoutModels"
 import { workouts } from "../schemas/workoutSchema"
 import { exercises } from "../schemas/exerciseSchema"
 import { users } from "../schemas/userSchema"
+
+export type Workout = InferModel<typeof workouts, "select">
+export type UpsertWorkout = InferModel<typeof workouts, "insert">
 
 export const GetWorkouts = db.query.workouts
   .findMany({
@@ -44,10 +46,5 @@ export const UpdateWorkout = async (id: number, workout: UpsertWorkout) => {
 }
 export const DeleteWorkout = db
   .delete(workouts)
-  .where(
-    sql`${eq(workouts.id, placeholder("id"))} and ${eq(
-      users.id,
-      placeholder("userId"),
-    )}`,
-  )
+  .where(eq(workouts.id, placeholder("id")))
   .prepare("DeleteWorkout")

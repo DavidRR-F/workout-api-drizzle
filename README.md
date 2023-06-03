@@ -12,7 +12,8 @@ To get started with the API, you can run the Development Evironment or Standalon
 2. Run the Docker Compose Services in the root directory
 
 ```
-docker-compose up
+$ docker-compose build --no-cache
+$ docker-compose up
 ```
 
 this will run a postgres database and the API as serivices in docker and add the migraion tables to the database

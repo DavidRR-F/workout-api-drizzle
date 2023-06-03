@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import validator from "validator"
-import { UpsertUser } from "../../db/models/userModels"
 import {
+  UpsertUser,
   DeleteUser,
   GetAllUsers,
   GetUser,
