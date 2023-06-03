@@ -1,10 +1,26 @@
 services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8080:8080"
+    # volumes:
+    #   - "./:/app"
+    command: >
+      sh -c "
+      npm run db:migrate &&
+      npm run dev"
+    depends_on:
+      - db
+
   db:
-    image: postgres
+    image: postgres:13-alpine
     restart: always
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: mydatabase
-    ports:
-      - "5433:5432"
+    # ports:
+    #   - "5433:5432"

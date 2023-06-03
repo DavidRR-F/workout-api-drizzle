@@ -4,9 +4,32 @@ This is the documentation for the Workout Tracker API. The API is built using Ex
 
 ## Getting Started
 
-To get started with the API, follow these steps:
+To get started with the API, you can run the Development Evironment or Standalone follow these steps:
 
-1. Install Node.js (version 14 or higher), npm (version 6 or higher), and docker (version 20 or higher).
+### Dev Envronnment
+
+1. Install docker (version 20 or higher)
+2. Run the Docker Compose Services in the root directory
+
+```
+docker-compose up
+```
+
+this will run a postgres database and the API as serivices in docker and add the migraion tables to the database
+
+You can sh into the postgres container to view the table structure with the following commands
+
+```
+$ docker exec -it db-1 bash
+$ psql -U admin -d mydatabase
+$ \dt
+```
+
+**_The API will be available at http://localhost:8080._**
+
+### Standalone
+
+1. Install Node.js (version 14 or higher), npm (version 6 or higher).
 2. Clone the repository and navigate to the project directory.
 
 ```
@@ -19,16 +42,16 @@ git clone https://github.com/DavidRR-F/workout-api-drizzle.git
 npm install
 ```
 
-4. Spin up the test db
+5. create a .env file in the root dir and paste the your postgres db connection string
 
 ```
-docker-compose up -d
+DATABASE_URL=postgres://<username>:<password>@<domain>:5432/<database>
 ```
 
-5. create a .env file in the root dir and paste the following connection string
+6. Add the migration tables to the database
 
 ```
-DATABASE_URL=postgres://admin:admin@localhost:5433/mydatabase
+npm run db:migrate
 ```
 
 7. Start the server.
@@ -38,18 +61,6 @@ npm run dev
 ```
 
 **_The API will be available at http://localhost:8080._**
-
-8. Create the drizzle database migration tables
-
-```
-npm run db:generate
-```
-
-9. Add the migration tables to the database
-
-```
-npm run db:migrate
-```
 
 ## Postman Collection
 

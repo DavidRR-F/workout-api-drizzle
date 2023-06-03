@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS "exercises" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"firstName" varchar(256) NOT NULL,
-	"lastName" varchar(256) NOT NULL,
+	"first_name" varchar(256) NOT NULL,
+	"last_name" varchar(256) NOT NULL,
 	"email" varchar(256) NOT NULL
 );
 --> statement-breakpoint
@@ -23,4 +23,15 @@ CREATE TABLE IF NOT EXISTS "workouts" (
 	"user_id" integer NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "email_idx" ON "users" ("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "email_idx" ON "users" ("email");--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "exercises" ADD CONSTRAINT "exercises_workout_id_workouts_id_fk" FOREIGN KEY ("workout_id") REFERENCES "workouts"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "workouts" ADD CONSTRAINT "workouts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
